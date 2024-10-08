@@ -32,7 +32,7 @@
 					                                                <th> Mobile Number </th>
 					                                                <th> Gender </th>
                                                           <th> Password </th>
-                                                          <th> Action </th>
+                                                          <th> Actions </th>
 					                                            </tr>
 					                                        </thead>
 					                                        <tbody>
