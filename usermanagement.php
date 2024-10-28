@@ -1,5 +1,5 @@
-<?php include('sidemenu.php'); ?>
 <?php include('header.php'); ?>
+<?php include('sidemenu.php'); ?>
 <!-- //include('config.php');
 // session_start();
 // include('connection.php');
@@ -20,7 +20,7 @@
 
         
 
-            <div class="main-content">
+            <!-- <div class="main-content">
                 <div class="main-content-inner">
                     <div class="breadcrumbs ace-save-state" id="breadcrumbs">
                         <ul class="breadcrumb">
@@ -33,11 +33,11 @@
                                 <a href="#">User Management</a>
                             </li>
                            
-                            <!--<li class="active">Blank Page</li>-->
-                        </ul><!-- /.breadcrumb -->
+                            <li class="active">Blank Page</li>
+                        </ul>/.breadcrumb
 
-                        <!-- /.nav-search -->
-                    </div>
+                        /.nav-search
+                    </div> -->
 
                     <div class="page-content">
                         <!-- /.ace-settings-container -->
@@ -65,7 +65,7 @@
                     <select class="form-control" name="first_name" id="first_name">
 					<option value="">Select Emp Name</option>
 					<?php 
-											$r=mysqli_query($link,"select ab.emp_id,ab.first_name from (select emp_id,first_name from employees union select employeeid as emp_id,first_name from empoyees)ab order by ab.first_name") or die(mysqli_error($link));
+											$r=mysqli_query($link,"select ab.emp_id,ab.first_name from (select emp_id,first_name from practice union select employeeid as emp_id,first_name from practice)ab order by ab.first_name") or die(mysqli_error($link));
 											while($r1=mysqli_fetch_array($r)){?>
 												
 												<option value="<?php echo $r1['emp_id'] ?>"><?php echo $r1['first_name']; ?></option>
@@ -447,23 +447,12 @@ where a.user!='admin'";
                                 <!-- PAGE CONTENT ENDS -->
                             </div><!-- /.col -->
                         </div>
-					
-					
-					
-					
-					
-					
-					
-					
-					
-					
                 </div><!-- /.row -->
             </div><!-- /.page-content -->
         </div>
     </div><!-- /.main-content -->
 
-    <?php include('template/footer.php'); ?>
-
+	<?php include('footer.php'); ?>
     <a href="#" id="btn-scroll-up" class="btn-scroll-up btn btn-sm btn-inverse">
         <i class="ace-icon fa fa-angle-double-up icon-only bigger-110"></i>
     </a>

@@ -85,7 +85,7 @@
  <!-- Sidebar -->
 <div class="sidebar">
         <a href="dashboard.php">Dashboard</a>
-        <a href="index.php">Employees</a>
+        <a href="employeelist.php">Employees</a>
         <a href="usermanagement.php">Usermanagement</a>
         <!-- <a href="projects.php">Projects</a>
         <a href="settings.php">Settings</a> -->

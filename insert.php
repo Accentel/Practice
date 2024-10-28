@@ -37,20 +37,10 @@
      <td><lable for="gender">Gender:</lable></td>
      <td> <input type="radio" name="gender" value="Male">Male
       <input type="radio" name="gender" value="Female">Female</td>
-</tr>
-
-
-      
-
-     
+</tr>  
       <td><input type="submit" value="submit"></td>
       <td><button onclick="location.href='index.php';" class="btn btn-group">Close</button></td>
      </form>
 </table>
-
-
-
-
-
 </body>
 </html>

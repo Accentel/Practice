@@ -1,77 +1,76 @@
-<?php include('header.php'); ?>
-<?php include('sidemenu.php')?>
+<?php include('connection.php')?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
+
 <style>
-    /* Table styling& */
-      table, th, td {
+
+   table{
     border: 1px solid;
-    text-align: center;
-     }
+    border-radius: 15px;
+    background: rgba(0,0,0,0.20);
+   }
 
-  </style>
- 
+   #type
+   {
+    width: 300px;
+    hight: 32px;
+    border: 0;
+    outline: 0;
+    background: transparent;
+    border-bottom: 3px solid black;
+    color: white;
+    font-size: 25px;
+   }
+
+   input:: -webkit-input-placeholder
+   {
+    font-size: 20px;
+    line-length: 3;
+    color: white;
+   }
+
+   #btn
+   {
+    width: 300px;
+    /* background-color: orange; */
+    hight:35px;
+    font-size:20px;
+    border-bottom: 3px solid black;
+   }
+
+
+</style>
+
+  <title>Document</title>
 </head>
-<body>
-
-    <h4>Employee List</h4>
+<body background="background2.jpg">
 
 
-                  <button onclick="location.href='insert.php';" class="btn btn-group">Add New</button>
 
+<table width="20%" border="3" align="center" cellspacing="20" style="margin-top:100px">
 
-                                                         <div class="table-scrollable">
-                                      					   <table class="table table-hover table-striped table-checkable order-column full-width" id="example4">
-					                                        <thead>
-					                                            <tr>
-					                                            	<th>ID</th>
-					                                                <th> First Name </th>
-					                                                <th> Last Name </th>
-					                                                <th> Email  </th>
-					                                                <th> Mobile Number </th>
-					                                                <th> Gender </th>
-                                                          <th> Password </th>
-                                                          <th> Actions </th>
-					                                            </tr>
-					                                        </thead>
-					                                        <tbody>
-                                                            
-                                                            <?php
-                                                  include("connection.php");
+<form action="dashboard.php">
+      
+      <tr>
+          <td align="center"><img src="https://img.icons8.com/?size=100&id=3225&format=png&color=000000" width="150px"></td>
+      </tr> 
 
-                                                 // Fetch employees
-                                                   $result = $conn->query("SELECT id, first_name, last_name, email, mobile_number, gender, password FROM practice");
+      <tr>
+          <td><input type="text" name="" placeholder="Email" id="type"></td>
+      </tr>
 
-                                                   if ($result->num_rows > 0) {
-                                                        while($row = $result->fetch_assoc()) {
-                                                        echo "<tr>
-                                                            <td>" . $row['id'] . "</td>
-                                                            <td>" . $row['first_name'] . "</td>
-                                                            <td>" . $row['last_name'] . "</td>
-                                                            <td>" . $row['email'] . "</td>
-                                                            <td>" . $row['mobile_number'] . "</td>
-                                                            <td>" . $row['gender'] . "</td>
-                                                            <td>" . $row['password'] . "</td>
-                                                            
-                                                          <td>  <a href='edit.php?id=" . $row['id'] . "'>Edit</a> | 
-                                                            <a href='delete.php?id=" . $row['id'] . "' onclick=\"return confirm('Are you sure you want to delete this record?');\">Delete</a></td>
-                                                        </tr>";
-                                                            }
-                                                            } else {
-                                                                echo "<tr><td colspan='7'>No employees found</td></tr>";
-                                                            }
+      <tr>
+          <td><input type="password" name="" placeholder="Password" id="type"></td>
+      </tr>
 
-                                                            $conn->close();
-                                                            ?>
-                                                        </tbody>
-																
-															<!-- </tbody> -->
-					                 </table>
-					               </div>
-
-                                                        
- <?php include('footer.php'); ?>
-
+      <tr>
+          <td align="center"><input type="submit" name="" value="Login" id="btn"></td>
+      </tr>
+ 
+      </form>
+</table>
+  
 </body>
 </html>

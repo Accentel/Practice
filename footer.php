@@ -6,13 +6,11 @@
 /* Footer styling */
 .footer {
     hight:100%;
-    margin-top: 30px;
+    margin-top: 250px;
     margin-left: -45px;
-    padding: 10px;
+    padding: 30px;
     
 }
-
-
 * {
             margin: 0;
             padding: 0;
