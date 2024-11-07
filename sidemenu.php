@@ -86,12 +86,12 @@
 <div class="sidebar">
         <a href="dashboard.php">Dashboard</a>
         <a href="employeelist.php">Employees</a>
-        <a href="usermanagement.php">Usermanagement</a>
+        <a href="user_list.php">Usermanagement</a>
+        <a href="emp_attendance.php">Attendance</a>
+        <a href="">Payslips</a>
         <!-- <a href="projects.php">Projects</a>
         <a href="settings.php">Settings</a> -->
     </div>
-
-  
 
     <!-- Page content -->
     <div class="content">
@@ -105,8 +105,5 @@
                 echo '<div class="alert alert-success" role="alert">Record deleted successfully</div>';
             }
             ?>
-
-
-  
 </body>
 </html>

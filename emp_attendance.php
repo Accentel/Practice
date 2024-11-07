@@ -62,8 +62,8 @@
 </head>
 <body>
 
-<h4>Employee List</h4>
-<button onclick="location.href='add_employee.php';" class="btn btn-group">Add New</button>
+<h4>Employee Attendance</h4>
+<!-- <button onclick="location.href='add_employee.php';" class="btn btn-group">Add New</button> -->
 
 <!-- Card for the Employee Table -->
 <div class="card card-topline">
@@ -99,12 +99,12 @@
             <thead>
                 <tr class="" style="text-align: center">
                     <th>ID</th>
-                    <th> Employee Code </th>
+                    <th> Emp Code </th>
                     <th>Name</th>
-                    <th>Email</th>
-                    <th>Mobile Number</th>
-                    <th>Gender</th>
-                    <th>Password</th>
+                    <th>Date</th>
+                    <th>In-Time</th>
+                    <th>Out Time</th>
+                    <th>Status</th>
                     <th>Actions</th>
                 </tr>
             </thead>

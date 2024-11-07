@@ -26,6 +26,6 @@ if (isset($_GET['id'])) {
 $conn->close();
 
 // Redirect back to the index page
-header("Location: index.php");
+header("Location: employeelist.php");
 exit();
 ?>

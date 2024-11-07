@@ -106,12 +106,12 @@
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ml-auto">
                     <li class="nav-item">
-                        <a class="nav-link" href="index.php">Home</a>
+                        <a class="nav-link" href="dashboard.php">Home</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="employees.php">Employees</a>
+                        <a class="nav-link" href="employeelist.php">Employees</a>
                     </li>
-                    <li class="nav-item">
+                    <!-- <li class="nav-item">
                         <a class="nav-link" href="departments.php">Departments</a>
                     </li>
                     <li class="nav-item">
@@ -119,6 +119,9 @@
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="settings.php">Settings</a>
+                    </li> -->
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.php">Logout</a>
                     </li>
                 </ul>
             </div>
@@ -129,7 +132,6 @@
     <div class="content">
         <div class="container">
             
-
             <?php
             if (isset($_GET['message']) && $_GET['message'] == 'inserted') {
                 echo '<div class="alert alert-success" role="alert">Record inserted successfully</div>';
@@ -137,8 +139,5 @@
                 echo '<div class="alert alert-success" role="alert">Record deleted successfully</div>';
             }
             ?>
-
-
-  
 </body>
 </html>

@@ -3,7 +3,24 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+<style>
+        body, html {
+            overflow-x: hidden;
+        }
+        .footer-container {
+    width: 101%;
+    text-align: center;
+    padding: 0px 0;
+    background-color: #f8f9fa; /* Adjust as needed */
+}
 
+footer {
+    margin: 0 auto;
+    display: flex;
+    justify-content: center;
+}
+
+    </style>
 </head>
         <body>
 
@@ -91,8 +108,7 @@
                         while($row = $result->fetch_assoc()) {
                             echo "<tr>";
                             echo "<td>" . $row["id"] . "</td>";
-                            echo "<td>" . $row["first_name"] . "</td>";
-                            echo "<td>" . $row["last_name"] . "</td>";
+                            echo "<td>" . $row["name"] . "</td>";
                             echo "<td>" . $row["email"] . "</td>";
                             echo "<td>" . $row["mobile_number"] . "</td>";
                             echo "<td>" . $row["gender"] . "</td>";
@@ -106,7 +122,13 @@
             </table>
         </div> -->
     </div>
+            <br><br><br><br><br><br><br>
 </div>
-<?php include('footer.php'); ?>
+<div class="footer-container">
+    <footer>
+      <?php include("footer.php");?>
+    </footer>
+</div>
+
 </body>
 </html>
