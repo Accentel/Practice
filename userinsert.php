@@ -6,7 +6,7 @@ if(isset($_REQUEST['Submit'])) {
     $uname = $_REQUEST['user_id'];
     $pwd1 = $_REQUEST['pwd'];
     $user = $_REQUEST['user'];
-
+    $menu=$_REQUEST['menu'];
     $pwd = md5($pwd1);
 
     // Enable error reporting

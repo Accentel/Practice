@@ -109,17 +109,7 @@ ini_set('display_error',1);
             <input type="checkbox" name="menu[]" value="2" />&nbsp;&nbsp; <b>DASHBOARD</b>
         </div>
 		        <div class="checkcust" align="left" style="margin-top:10px;margin-bottom:10px;margin-left:10px;">
-			 	 <input type="checkbox" name="menu[]" value="0200" />&nbsp;&nbsp; Employee <br>
-				 <input type="checkbox" name="menu[]" value="0201" />&nbsp;&nbsp; Add Mandal <br>
-				 <input type="checkbox" name="menu[]" value="0202" />&nbsp;&nbsp; Add Address <br>
-
-			 <input type="checkbox" name="menu[]" value="201" />&nbsp;&nbsp; Employee Department <br>
-			 <input type="checkbox" name="menu[]" value="202" />&nbsp;&nbsp; Employee Details <br>
-			<!-- <input type="checkbox" name="menu[]" value="203" />&nbsp;&nbsp; Birth Certificate Format <br>
-			 <input type="checkbox" name="menu[]" value="204" />&nbsp;&nbsp; Delivery / Birth Certificate Format <br>
-			<input type="checkbox" name="menu[]" value="205" />&nbsp;&nbsp;Sterilisation Certificate Format<br>-->
-			<input type="checkbox" name="menu[]" value="206" />&nbsp;&nbsp; Change Password<br>
-			<input type="checkbox" name="menu[]" value="207" />&nbsp;&nbsp; User Management<br>
+			 	 <input type="checkbox" name="menu[]" value="0200" />&nbsp;&nbsp; Dashboard <br>
 		</div>
 		</td>
 
@@ -127,26 +117,21 @@ ini_set('display_error',1);
 
         <td valign="top" class="label1" colspan="2">
 		<div align="left">
-            <input type="checkbox" name="menu[]" value="4" />&nbsp;&nbsp; <b>DOCTOR</b>
+            <input type="checkbox" name="menu[]" value="4" />&nbsp;&nbsp; <b>Attendance</b>
         </div>
 		<div class="checkqut" align="left" style="margin-top:10px;margin-bottom:10px;margin-left:10px;">
-			<input type="checkbox" name="menu[]" value="41" />&nbsp;&nbsp; Doctor<br>
-			<input type="checkbox" name="menu[]" value="42" />&nbsp;&nbsp; Doctor Department<br>
-		</div>
+			<input type="checkbox" name="menu[]" value="41" />&nbsp;&nbsp; Attendance<br>
+	    </div>
 		</td>
 		<td ></td>
 
          
 		 <td valign="top" class="label1" colspan="2">
 		<div align="left">
-            <input type="checkbox" name="menu[]" value="5" />&nbsp;&nbsp; <b>Appointment</b>
+            <input type="checkbox" name="menu[]" value="5" />&nbsp;&nbsp; <b>Payslips</b>
         </div>
 		<div class="checkpur" align="left" style="margin-top:10px;margin-bottom:10px;margin-left:10px;">
-			<input type="checkbox" name="menu[]" value="51" />&nbsp;&nbsp; Book Appointment<br>
-
-            <input type="checkbox" name="menu[]" value="53" />&nbsp;&nbsp; Registration Card<br>
-			<!--<input type="checkbox" name="menu[]" value="52" />&nbsp;&nbsp; OP Cancellation<br>-->
-			<input type="checkbox" name="menu[]" value="54" />&nbsp;&nbsp;Out Patient History<br>
+			<input type="checkbox" name="menu[]" value="51" />&nbsp;&nbsp; Payslips<br>
 		</div>
 		</td>
         <td ></td>
@@ -156,98 +141,7 @@ ini_set('display_error',1);
         <td ></td>
         </tr>
 
-        <tr >
-
-
-        <td valign="top" class="label1" colspan="2" >
-		<div align="left">
-            <input type="checkbox" name="menu[]" value="9" />&nbsp;&nbsp; <b>Pharmacy</b>
-        </div>
-		<div class="checkinv" align="left" style="margin-top:10px;margin-bottom:10px;margin-left:10px;">
-			<!--<input type="checkbox" name="menu[]" value="90" />&nbsp;&nbsp; <B>Masters</B><br>-->
-
-                 &nbsp;&nbsp;   <input type="checkbox" name="menu[]" value="91" />&nbsp;&nbsp; UOM<br>
-                 &nbsp;&nbsp;   <input type="checkbox" name="menu[]" value="92" />&nbsp;&nbsp; Product Type<br>
-                 &nbsp;&nbsp;   <input type="checkbox" name="menu[]" value="93" />&nbsp;&nbsp; Supplier Information<br>
-                 &nbsp;&nbsp;   <input type="checkbox" name="menu[]" value="94" />&nbsp;&nbsp; Supplier Amount<br>
-                 &nbsp;&nbsp;   <input type="checkbox" name="menu[]" value="95" />&nbsp;&nbsp; Packing Information<br>
-                 &nbsp;&nbsp;   <input type="checkbox" name="menu[]" value="96" />&nbsp;&nbsp; Product Details<br>
-				 &nbsp;&nbsp;   <input type="checkbox" name="menu[]" value="97" />&nbsp;&nbsp; Product Details Edit<br>
-
-
-		</td>
-        <td colspan="2" class="label1" ></td>
-
-
-
-		 <td valign="top" class="label1" colspan="2" >
-		<div align="left">
-            <input type="checkbox" name="menu[]" value="90" />&nbsp;&nbsp; <b>Pharmacy Purchase</b>
-        </div>
-		<div class="checkinv" align="left" style="margin-top:10px;margin-bottom:10px;margin-left:10px;">
-			     &nbsp;&nbsp;   <input type="checkbox" name="menu[]" value="98" />&nbsp;&nbsp; Purchase Invoice<br>
-                 &nbsp;&nbsp;   <input type="checkbox" name="menu[]" value="99" />&nbsp;&nbsp; Product Adjustment<br>
-                 &nbsp;&nbsp;   <input type="checkbox" name="menu[]" value="990" />&nbsp;&nbsp; Stock Adjustment<br>
-				 &nbsp;&nbsp;   <input type="checkbox" name="menu[]" value="991" />&nbsp;&nbsp; Stock Adjustment Report<br>
-
-		</div>
-		</td>
-
-		<td ></td>
-
-
-		 <td class="label1" colspan="2" >
-		<div align="left">
-            <input type="checkbox" name="menu[]" value="12903" />&nbsp;&nbsp; <b>Pharmacy Reports</b>
-        </div>
-		<div class="checkinv" align="left" style="margin-top:10px;margin-bottom:10px;margin-left:10px;">
-			<input type="checkbox" name="menu[]" value="9996" />&nbsp;&nbsp; DAY-SALES REPORT<br>
-			<input type="checkbox" name="menu[]" value="9998" />&nbsp;&nbsp; Drug Inspector Report<br> -->
-			<input type="checkbox" name="menu[]" value="106" />&nbsp;&nbsp; Sales Entry Report<br>
-		<input type="checkbox" name="menu[]" value="138" />&nbsp;&nbsp; Pharmacy Account Summery<br>
-		<input type="checkbox" name="menu[]" value="1388" />&nbsp;&nbsp; Pharmacy History<br>
-	  <input type="checkbox" name="menu[]" value="1389" />&nbsp;&nbsp; Pharmacy History With Amount<br>
-
-
-
-		</div>
-		</td>
-        <td ></td>
-        </tr>
-        <tr >
-
-        <td valign="top" class="label1" colspan="2" >
-		<div align="left">
-            <input type="checkbox" name="menu[]" value="12" />&nbsp;&nbsp; <b>REPORTS</b>
-        </div>
-		<div class="checkinv" align="left" style="margin-top:10px;margin-bottom:10px;margin-left:10px;">
-				  &nbsp;&nbsp;   <input type="checkbox" name="menu[]" value="030" />&nbsp;&nbsp; Out Patient Report<br>
-				  &nbsp;&nbsp;   <input type="checkbox" name="menu[]" value="1205" />&nbsp;&nbsp; Dialy Collected Amount Report<br>
-                 &nbsp;&nbsp;   <input type="checkbox" name="menu[]" value="1299" />&nbsp;&nbsp; Daily  Amount Summary<br>
-		</td>
-
-		<td ></td>
-		<td class="label1" colspan="2" >
-		<div align="left">
-            <input type="checkbox" name="menu[]" value="10" />&nbsp;&nbsp; <b>Pharmacy Sales</b>
-        </div>
-		<div class="checkinv" align="left" style="margin-top:10px;margin-bottom:10px;margin-left:10px;">
-			<input type="checkbox" name="menu[]" value="101" />&nbsp;&nbsp; Sales Entry<br>
-            <input type="checkbox" name="menu[]" value="102" />&nbsp;&nbsp; Sales Return<br>
-		</div>
-		</td>
-        <td ></td>
-
-
-		<td valign="top" class="label1" colspan="2" >
-		<div align="left">
-            <input type="checkbox" name="menu[]" value="15" />&nbsp;&nbsp; <b>Cancellation</b>
-        </div>
-		<div class="checkinv" align="left" style="margin-top:10px;margin-bottom:10px;margin-left:10px;">
-		<input type="checkbox" name="menu[]" value="151" />&nbsp;&nbsp; OP Cancellation<br>
-        </div>
-		</td>
-
+        <tr>
         <td ></td>
         </tr>
 

@@ -53,6 +53,11 @@
 
 <div class="card">
     <div class="card-topline"></div>
+    <form method='post' action='update_attendance.php'; style="margin-left:750px">
+                                    <input type='hidden' name='id' value='{$row['id']}'>
+                                    <button type='submit' name='check_in' value='1'>Check-in</button>
+                                    <button type='submit' name='check_out' value='1'>Check-out</button>
+                                </form>
     <div class="table-scrollable">
         <table class="table table-hover table-striped table-checkable order-column full-width">
             <thead>
@@ -98,11 +103,8 @@
                             <td>{$row['status']}</td>
                             <td>{$row['work_hours']}</td>
                             <td>
-                                <form method='post' action='update_attendance.php'>
-                                    <input type='hidden' name='id' value='{$row['id']}'>
-                                    <button type='submit' name='check_in' value='1'>Check-in</button>
-                                    <button type='submit' name='check_out' value='1'>Check-out</button>
-                                </form>
+                                <a href='edit_employee.php?id={$row['id']}'>Edit</a> | 
+                                <a href='delete_employee.php?id={$row['id']}' onclick=\"return confirm('Are you sure you want to delete this record?');\">Delete</a>
                             </td>
                         </tr>";
                     }
