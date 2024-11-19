@@ -99,7 +99,7 @@
             <thead>
                 <tr class="" style="text-align: center">
                     <th>ID</th>
-                    <th> Employee Code </th>
+                    <th>Emp Code </th>
                     <th>Name</th>
                     <th>Email</th>
                     <th>Mobile Number</th>

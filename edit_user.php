@@ -1,7 +1,8 @@
 <?php
 $menu2 = $menu0200 = $menu4 = $menu41 = $menu5 = $menu51 = ''; 
 include("header.php");
-session_start(); // Ensure session is started
+
+session_start(); 
 
 if (isset($_SESSION['user'])) {
     $ses = $_SESSION['user'];

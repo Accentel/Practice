@@ -1,3 +1,7 @@
+<?php 
+session_start();
+if($_SESSION['user']=="admin"){ ?>
+    
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -107,3 +111,8 @@
             ?>
 </body>
 </html>
+
+<?php }else{
+
+include('sidemenu1.php');
+}?>		
