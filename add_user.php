@@ -112,7 +112,15 @@ ini_set('display_error',1);
 			 	 <input type="checkbox" name="menu[]" value="0200" />&nbsp;&nbsp; Dashboard <br>
 		</div>
 		</td>
-
+        <td></td>
+        <td valign="top" class="label1" colspan="2">
+		<div align="left">
+            <input type="checkbox" name="menu[]" value="3" />&nbsp;&nbsp; <b>Usermanagement</b>
+        </div>
+		<div class="checkpur" align="left" style="margin-top:10px;margin-bottom:10px;margin-left:10px;">
+			<input type="checkbox" name="menu[]" value="31" />&nbsp;&nbsp; Usermanagement<br>
+		</div>
+		</td>
         <td ></td>
 
         <td valign="top" class="label1" colspan="2">
@@ -125,7 +133,6 @@ ini_set('display_error',1);
 		</td>
 		<td ></td>
 
-         
 		 <td valign="top" class="label1" colspan="2">
 		<div align="left">
             <input type="checkbox" name="menu[]" value="5" />&nbsp;&nbsp; <b>Payslips</b>
@@ -135,15 +142,17 @@ ini_set('display_error',1);
 		</div>
 		</td>
         <td ></td>
+
+        <td valign="top" class="label1" colspan="2">
+		<div align="left">
+            <input type="checkbox" name="menu[]" value="6" />&nbsp;&nbsp; <b>Employees</b>
+        </div>
+		<div class="checkpur" align="left" style="margin-top:10px;margin-bottom:10px;margin-left:10px;">
+			<input type="checkbox" name="menu[]" value="61" />&nbsp;&nbsp; Employees<br>
+		</div>
+		</td>        
+
 		</tr>
-
-        <tr >
-        <td ></td>
-        </tr>
-
-        <tr>
-        <td ></td>
-        </tr>
 
  
                 </table>

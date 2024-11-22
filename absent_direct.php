@@ -1,8 +1,8 @@
 
 <!-- This code is auto_mark_absent.php code starts here -->
- <!-- With this code, the absent will when work when the load this page only, otherwise it won't work -->
+ <!-- With this code, the absent will work when the load this page only, otherwise it won't work -->
 <?php
-include("connection.php");
+include "connection.php";
 
 date_default_timezone_set('Asia/Kolkata');
 $current_date = date('Y-m-d');

@@ -50,20 +50,29 @@ $p = "SELECT D.menus FROM hr_user as D, login as M WHERE D.emp_id = M.ename AND 
 $sql = mysqli_query($conn, $p);
 $menu2="0";
 $menu0200="0";
+$menu3="0";
+$menu31="0";
 $menu4="0";
 $menu41="0";
 $menu5="0";
-// $menu51="0";
+$menu51="0";
+$menu6="0";
+$menu61="0";
 if ($sql) {
     while ($row = mysqli_fetch_array($sql)) {
         $menu = $row[0];
         // echo $menu;
         if ($menu == "2") { $menu2 = "2";}
+        if ($menu == "0200") { $menu0200 = "0200"; }
+        if ($menu == "3") { $menu3 = "3";}
+        if ($menu == "31") { $menu31 = "31";}
         if ($menu == "4") { $menu4 = "4"; }
         if ($menu == "41") { $menu41 = "41"; }
         if ($menu == "5") { $menu5 = "5"; }
         if ($menu == "51") { $menu51 = "51"; }
-        if ($menu == "0200") { $menu0200 = "0200"; }
+        if ($menu == "6") { $menu6 = "6"; }
+        if($menu == "61") { $menu61 = "61"; }
+        
     }
 }
 ?>
@@ -74,12 +83,7 @@ if ($sql) {
       ?>
         <a href="dashboard.php">Dashboard</a><?php } ?>
 
-        <?php if($menu0200 == "0200") {
-            ?>
-
-        <a href="employeelist.php">Employees</a> <?php } ?>
-
-        <?php if($menu4 == "4"){
+        <?php if($menu3 == "3"){
             ?>
 
         <a href="user_list.php">Usermanagement</a> <?php }?>
@@ -92,5 +96,10 @@ if ($sql) {
         <?php if($menu5 == "5"){
         ?>
         <a href="">Payslips</a> <?php } ?>
+
+        <?php if($menu61 == "61") {
+            ?>
+
+        <a href="employeelist.php">Employees</a> <?php } ?>
          
     </div>

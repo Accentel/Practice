@@ -1,5 +1,5 @@
 <?php
-$menu2 = $menu0200 = $menu4 = $menu41 = $menu5 = $menu51 = ''; 
+$menu2 = $menu0200 = $menu3 = $menu31 = $menu4 = $menu41 = $menu5 = $menu51 = $menu6 = $menu61 =''; 
 include("header.php");
 
 session_start(); 
@@ -122,7 +122,8 @@ $menu= $row1['menus'];
 	if($menu == "2"){$menu2="2";}
 	if($menu == "0200"){$menu0200="0200";}
 	 
-	
+	if($menu == "3"){$menu3="3";}
+	if($menu == "31"){$menu31="31";}
 	 
 	if($menu == "4"){$menu4="4";}
 	if($menu == "41"){$menu41="41";}
@@ -131,6 +132,8 @@ $menu= $row1['menus'];
 	if($menu == "5"){$menu5="5";}
 	if($menu == "51"){$menu51="51";}
 	 
+    if($menu == "6"){$menu6="6";}
+	if($menu == "61"){$menu61="61";}
 	
 }
  ?>
@@ -147,22 +150,23 @@ $menu= $row1['menus'];
 		<div align="left">
             <input type="checkbox" name="menu[]" value="2" <?php if($menu2=='2'){echo "checked='checked'";} ?> />&nbsp;&nbsp; <b>DASHBOARD</b>
         </div>
-		<div class="checkcust" align="left" style="margin-top:10px;margin-bottom:10px;margin-left:10px;">
-			
-		
+		<div class="checkcust" align="left" style="margin-top:10px;margin-bottom:10px;margin-left:10px;">		
 			<input type="checkbox" name="menu[]" value="0200" <?php if($menu0200=='0200'){echo "checked='checked'";} ?>/>&nbsp;&nbsp; Dashboard <br>
-			
-			
-			
-			
 		</div>
 		</td>
         
-        
+        <td valign="top" class="label1" colspan="3">
+		<div align="left">
+            <input type="checkbox" name="menu[]" value="3" <?php if($menu3=='3'){echo "checked='checked'";} ?> />&nbsp;&nbsp; <b>USERMANAGEMENT</b>
+        </div>
+		<div class="checkcust" align="left" style="margin-top:10px;margin-bottom:10px;margin-left:10px;">		
+			<input type="checkbox" name="menu[]" value="31" <?php if($menu31=='31'){echo "checked='checked'";} ?>/>&nbsp;&nbsp; Usermanagement <br>
+		</div>
+		</td>
         
         <td valign="top" class="label1" colspan="2">
 		<div align="left">
-            <input type="checkbox" name="menu[]" value="4" <?php if($menu4=='4'){echo "checked='checked'";} ?>/>&nbsp;&nbsp; <b>Attendance</b>
+            <input type="checkbox" name="menu[]" value="4" <?php if($menu4=='4'){echo "checked='checked'";} ?>/>&nbsp;&nbsp; <b>ATTENDANCE</b>
         </div>
 		<div class="checkqut" align="left" style="margin-top:10px;margin-bottom:10px;margin-left:10px;">
 			<input type="checkbox" name="menu[]" value="41" <?php if($menu41=='41'){echo "checked='checked'";} ?>/>&nbsp;&nbsp; Attendance<br>
@@ -181,6 +185,15 @@ $menu= $row1['menus'];
         </div>
 		</td>
         <td ></td>
+
+        <td valign="top" class="label1" colspan="2">
+		<div align="left">
+            <input type="checkbox" name="menu[]" value="6" <?php if($menu6=='6'){echo "checked='checked'";} ?> />&nbsp;&nbsp; <b>EMPLOYEES</b>
+        </div>
+		<div class="checkcust" align="left" style="margin-top:10px;margin-bottom:10px;margin-left:10px;">		
+			<input type="checkbox" name="menu[]" value="61" <?php if($menu61=='61'){echo "checked='checked'";} ?>/>&nbsp;&nbsp; Employees <br>
+		</div>
+		</td>
 
 		</tr>
 

@@ -86,33 +86,38 @@ include('sidemenu.php');
         }
     </style>
     <script>
-        function checkTimeAndMarkAbsent() {
-            const now = new Date();
+    function checkTimeAndMarkAbsent() {
+        const now = new Date();
 
-            // Format the current time as HH:mm:ss
-            const currentTime = now.toTimeString().split(' ')[0];
+        // Format the current time as HH:mm:ss
+        const currentTime = now.toTimeString().split(' ')[0];
 
-            // Define the target time range
-            const targetStartTime = "13:01:00";
-            const targetEndTime = "13:02:00";
+        // Define the target time range
+        const targetStartTime = "18:00:00";
+        const targetEndTime = "18:01:00";
 
-            // Check if the current time is within the target range
-            if (currentTime >= targetStartTime && currentTime < targetEndTime) {
-                // Send an AJAX request to mark absentees
-                const xhr = new XMLHttpRequest();
-                xhr.open("GET", "auto_mark_absent.php", true);
-                xhr.onreadystatechange = function () {
-                    if (xhr.readyState === 4 && xhr.status === 200) {
-                        console.log(xhr.responseText); // Log the response from the server
-                    }
-                };
-                xhr.send();
-            }
+        // Check if the current time is within the target range
+        if (currentTime >= targetStartTime && currentTime < targetEndTime) {
+            // Send an AJAX request to mark absentees
+            const xhr = new XMLHttpRequest();
+            xhr.open("GET", "auto_mark_absent.php", true);
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState === 4 && xhr.status === 200) {
+                    console.log(xhr.responseText); // Log the response from the server
+                }
+            };
+            xhr.send();
         }
+    }
 
-        // Run the function every minute
-        setInterval(checkTimeAndMarkAbsent, 60000); // 60000ms = 1 minute
-    </script>
+    // Align the interval to start at the next full minute
+    const now = new Date();
+    const delay = 60000 - (now.getSeconds() * 1000 + now.getMilliseconds());
+    setTimeout(function () {
+        checkTimeAndMarkAbsent();
+        setInterval(checkTimeAndMarkAbsent, 60000);
+    }, delay);
+</script>
    <script>
     function openModal(empId, action) {
         document.getElementById("modal").style.display = "block";
@@ -190,6 +195,7 @@ include('sidemenu.php');
                                             e.empcode, e.name
                                         FROM emp_attendance AS ea
                                         JOIN practice AS e ON ea.empcode = e.id
+                                        -- ORDER BY ea.date ASC, ea.id DESC
                                         LIMIT $offset, $limit";
 
                                 $result = $conn->query($sql);
@@ -209,7 +215,7 @@ include('sidemenu.php');
                                             <td>{$row['work_hours']}</td>
                                             <td>{$row['status']}</td>
                                             <td>
-                                                <a href='edit_employee.php?id={$row['id']}'>View</a>
+                                                <a href='view_attendance.php?id={$row['id']}'>View</a>
                                                 
                                             </td>
                                         </tr>";
