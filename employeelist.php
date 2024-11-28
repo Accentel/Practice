@@ -61,6 +61,7 @@
     </style>
 </head>
 <body>
+<!-- <td>{$row['name']}</td> -->
 
 <h4>Employee List</h4>
 <button onclick="location.href='add_employee.php';" class="btn btn-group">Add New</button>
@@ -130,7 +131,7 @@
                         echo "<tr style='text-align:center'>
                             <td>{$row['id']}</td>
                             <td>{$row['empcode']}</td>
-                            <td>{$row['name']}</td>
+                            <td><a href='attendance.php?empcode={$row['empcode']}'>{$row['name']}</a></td>
                             <td>{$row['email']}</td>
                             <td>{$row['mobile_number']}</td>
                             <td>{$row['gender']}</td>

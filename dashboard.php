@@ -181,14 +181,21 @@ footer {
                 right: 'dayGridMonth,timeGridWeek,timeGridDay'
             },
             events: async function(fetchInfo, successCallback, failureCallback) {
-                // Fetch attendance data from the server
                 try {
-                    const response = await fetch('fetch_attendance.php'); // This script fetches data from the database
+                    const response = await fetch('fetch_attendance.php'); // Fetch data from your server
                     const data = await response.json();
                     successCallback(data);
                 } catch (error) {
                     console.error('Error fetching attendance data:', error);
                     failureCallback(error);
+                }
+            },
+            dayCellDidMount: function(info) {
+                // Apply a light block color for Sundays
+                if (info.date.getDay() === 0) { // 0 = Sunday
+                    info.el.style.backgroundColor = '#eaf4fc'; // Light blue background
+                    info.el.style.color = '#004085'; // Dark blue text
+                    info.el.style.border = '1px solid #bee5eb'; // Light blue border
                 }
             }
         });
@@ -196,5 +203,6 @@ footer {
         calendar.render();
     });
 </script>
+
 </body>
 </html>

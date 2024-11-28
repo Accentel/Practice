@@ -95,7 +95,7 @@ if ($sql) {
 
         <?php if($menu5 == "5"){
         ?>
-        <a href="">Payslips</a> <?php } ?>
+        <a href="payslip.php">Employee Attendance</a> <?php } ?>
 
         <?php if($menu61 == "61") {
             ?>

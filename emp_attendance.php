@@ -4,7 +4,8 @@
 include('header.php');
 include('sidemenu.php'); 
 // include('auto_mark_absent.php');
- $name = $_SESSION['name'] ?? ''; // Check if 'name1' exists in $_SESSION
+// $empcode = $_SESSION['empcode'];
+ $name = $_SESSION['user'] ?? ''; // Check if 'name1' exists in $_SESSION
  
 ?>
 
@@ -153,7 +154,10 @@ include('sidemenu.php');
 
 </head>
     <body>
-            <h5>Employee Attendance - <?php echo date('F Y'); ?></h5>
+                <h5>
+                  Welcome <?php echo htmlspecialchars($name); ?> - <?php echo date('F Y'); ?>
+                </h5>
+
                 <div class="card">
                  <div class="card-topline"></div>
                     <form method="post" action="emp_attendance.php" style="margin-left:758px; margin-bottom:10px; display: flex; gap: 13px; align-items: center;">
@@ -195,7 +199,7 @@ include('sidemenu.php');
                                             e.empcode, e.name
                                         FROM emp_attendance AS ea
                                         JOIN practice AS e ON ea.empcode = e.id
-                                        -- ORDER BY ea.date ASC, ea.id DESC
+                                        ORDER BY ea.date ASC, ea.id ASC
                                         LIMIT $offset, $limit";
 
                                 $result = $conn->query($sql);
@@ -284,14 +288,15 @@ include('sidemenu.php');
                 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     include("connection.php");
 
-                    $id = $_POST['id'];
+                    $id = $_POST['id'] ?? null; // Default to null if 'id' is not set
                     $current_date = date('Y-m-d');
                     date_default_timezone_set('Asia/Kolkata');
                     $current_time = date('H:i:s');
+                    
 
                     if (isset($_POST['check_in'])) {
                         // Check if already checked in
-                        $stmt = $conn->prepare("SELECT id FROM emp_attendance WHERE empcode = ? AND date = ? AND check_in_time IS NOT NULL");
+                        $stmt = $conn->prepare("SELECT name FROM emp_attendance WHERE empcode = ? AND date = ? AND check_in_time IS NOT NULL");
                         $stmt->bind_param("is", $id, $current_date);
                         $stmt->execute();
                         $stmt->store_result();
@@ -299,8 +304,9 @@ include('sidemenu.php');
                         if ($stmt->num_rows > 0) {
                             echo "<script>showAlert('Check-in already recorded for today');</script>";
                         } else {
-                            $stmt = $conn->prepare("INSERT INTO emp_attendance (empcode, date, check_in_time, status) VALUES (?, ?, ?, 'Present')");
-                            $stmt->bind_param("iss", $id, $current_date, $current_time);
+                            $stmt = $conn->prepare("INSERT INTO emp_attendance (empcode, name, date, check_in_time, status) VALUES (?, ?, ?, ?, 'Present')");
+                            $stmt->bind_param("isss", $id, $name, $current_date, $current_time); // Matches the query
+                            
                             $stmt->execute();
                             echo "<script>showAlert('Check-in successful');</script>";
                         }

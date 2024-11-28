@@ -92,7 +92,7 @@ if($_SESSION['user']=="admin"){ ?>
         <a href="employeelist.php">Employees</a>
         <a href="user_list.php">Usermanagement</a>
         <a href="emp_attendance.php">Attendance</a>
-        <a href="">Payslips</a>
+        <a href="payslip.php">Employee Attendance</a>
         <!-- <a href="projects.php">Projects</a>
         <a href="settings.php">Settings</a> -->
     </div>

@@ -67,6 +67,18 @@ $ses=$_SESSION['user'];
                 </div>
             </div>
 
+            <!-- <div class="form-group row">
+                <label for="role" class="col-sm-4 col-form-label"><b>Role:</b><span style="color: red;"> * </span></label>
+                <div class="col-sm-8">
+                    <select name="role" id="role" class="form-control" required>
+                        <option value="admin">Admin</option>
+                        <option value="user" selected>User</option>
+                    </select>
+                    <input type="hidden" name="user" value="<?php echo $ses; ?>" id="user" class="form-control"/>
+                </div>
+            </div> -->
+
+
             <div class="form-group row">
                 <label for="email" class="col-sm-4 col-form-label"><b>Email:</b><span style="color: red;"> * </span></label>
                 <div class="col-sm-8">
