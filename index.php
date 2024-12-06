@@ -88,10 +88,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             font-size: 16px;
             margin-top: 10px;
         }
+        marquee {
+            color: red; /* Red color for the text */
+            font-size: 24px; /* Set font size */
+        }
     </style>
     <title>Login Page</title>
 </head>
 <body>
+    <marquee direction="left" scrollamount="10" scrolldelay="50" behavior="alternate">
+       <b> Welcome to Employee Management System...! </b>
+    </marquee>          
 
 <table width="20%" border="3" align="center" cellspacing="20" style="margin-top:100px">
     <form action="" method="POST">

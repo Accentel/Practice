@@ -7,7 +7,6 @@ if($_SESSION['user']=="admin"){ ?>
 <head>
   
 <style>
-
   /* Sidebar styling */
 .sidebar {
     height: 100%;
@@ -31,16 +30,11 @@ if($_SESSION['user']=="admin"){ ?>
     background-color: #575757;
 }
 
-
-
-
 /* Page content */
 .content {
     margin-left: 260px; /* Same as the width of the sidebar */
     padding: 20px;
 }
-
-
 
 /* Sidebar styling */
 .sidebar {
@@ -71,9 +65,8 @@ if($_SESSION['user']=="admin"){ ?>
     margin-left: 110px; /* Same as the width of the sidebar */
     padding: 20px;
 }
-
-
   </style>
+  
   <title>Employee Management</title>
     <!-- Include Bootstrap CSS for styling (optional) -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
@@ -93,6 +86,7 @@ if($_SESSION['user']=="admin"){ ?>
         <a href="user_list.php">Usermanagement</a>
         <a href="emp_attendance.php">Attendance</a>
         <a href="payslip.php">Employee Attendance</a>
+        <a href="atte_overview.php">Overview</a>
         <!-- <a href="projects.php">Projects</a>
         <a href="settings.php">Settings</a> -->
     </div>

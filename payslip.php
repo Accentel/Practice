@@ -46,45 +46,46 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         // Record Check-out time
         date_default_timezone_set('Asia/Kolkata');
         $check_out_time = date('H:i:s'); // Get current time
-
-        // Get Check-in time
+    
+        // Check if there is an existing check-in record without a check-out time
         $stmt = $conn->prepare("SELECT check_in_time FROM emp_attendance WHERE empcode = ? AND date = ? AND check_out_time = ''");
         $stmt->bind_param("ss", $empcode, $current_date);
         $stmt->execute();
         $result = $stmt->get_result();
-
+    
         if ($result->num_rows > 0) {
             $row = $result->fetch_assoc();
             $check_in_time = $row['check_in_time'];
-
+    
             // Calculate Work Hours
             $check_in_timestamp = strtotime($check_in_time);
             $check_out_timestamp = strtotime($check_out_time);
-
+    
             if ($check_out_timestamp < $check_in_timestamp) {
                 $check_out_timestamp += 86400; // Add 24 hours if crossed midnight
             }
-
+    
             $work_duration = $check_out_timestamp - $check_in_timestamp;
-
+    
             // Convert the work duration to hours, minutes, and seconds
             $hours = floor($work_duration / 3600);
             $minutes = floor(($work_duration % 3600) / 60);
             $seconds = $work_duration % 60;
-
+    
             $work_hours = sprintf("%02d:%02d:%02d", $hours, $minutes, $seconds);
-
+    
             // Update Check-out record and Work Hours
             $stmt = $conn->prepare("UPDATE emp_attendance SET check_out_time = ?, work_hours = ? 
                                     WHERE empcode = ? AND date = ? AND check_out_time = ''");
             $stmt->bind_param("ssss", $check_out_time, $work_hours, $empcode, $current_date);
             $stmt->execute();
-
+    
             echo "<script>alert('Check-out successful!');</script>";
         } else {
-            echo "<script>alert('No check-in record found for today!');</script>";
+            // No check-in record found for today
+            echo "<script>alert('Error: No check-in record found for this employee today. Cannot check out without checking in.');</script>";
         }
-    }
+    }    
 }
 ?>
 <!DOCTYPE html>
@@ -244,8 +245,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
 </head>
 <body>
-<h5>
-                  Employee Attendance - <?php echo date('d F Y'); ?>
+                <h5>
+                 <b> Employee Attendance - <?php echo date('d F Y'); ?></b>
                 </h5>
 
     <div class="card">

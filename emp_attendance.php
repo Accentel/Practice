@@ -5,9 +5,9 @@ include('header.php');
 include('sidemenu.php'); 
 // include('auto_mark_absent.php');
 // $empcode = $_SESSION['empcode'];
- $name = $_SESSION['user'] ?? ''; // Check if 'name1' exists in $_SESSION
+//  $name = $_SESSION['user'] ?? ''; // Check if 'name1' exists in $_SESSION
+if ($_SESSION['user'] == "admin") {?>
  
-?>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -154,8 +154,9 @@ include('sidemenu.php');
 
 </head>
     <body>
-                <h5>
-                  Welcome <?php echo htmlspecialchars($name); ?> - <?php echo date('F Y'); ?>
+        <!-- <?php echo htmlspecialchars($name); ?> -->
+                <h5><b>
+                  Employee Attendance  - <?php echo date('F Y'); ?></b>
                 </h5>
 
                 <div class="card">
@@ -295,23 +296,36 @@ include('sidemenu.php');
                     
 
                     if (isset($_POST['check_in'])) {
-                        // Check if already checked in
-                        $stmt = $conn->prepare("SELECT name FROM emp_attendance WHERE empcode = ? AND date = ? AND check_in_time IS NOT NULL");
-                        $stmt->bind_param("is", $id, $current_date);
+                        // Fetch the employee name from the database
+                        $stmt = $conn->prepare("SELECT name FROM practice WHERE id = ?");
+                        $stmt->bind_param("i", $id); // Assuming $id is the empcode
                         $stmt->execute();
-                        $stmt->store_result();
-
-                        if ($stmt->num_rows > 0) {
-                            echo "<script>showAlert('Check-in already recorded for today');</script>";
-                        } else {
-                            $stmt = $conn->prepare("INSERT INTO emp_attendance (empcode, name, date, check_in_time, status) VALUES (?, ?, ?, ?, 'Present')");
-                            $stmt->bind_param("isss", $id, $name, $current_date, $current_time); // Matches the query
-                            
-                            $stmt->execute();
-                            echo "<script>showAlert('Check-in successful');</script>";
-                        }
+                        $stmt->bind_result($name);
+                        $stmt->fetch();
                         $stmt->close();
+                    
+                        if ($name) { // Ensure the name was found
+                            // Check if already checked in
+                            $stmt = $conn->prepare("SELECT id FROM emp_attendance WHERE empcode = ? AND date = ? AND check_in_time IS NOT NULL");
+                            $stmt->bind_param("is", $id, $current_date);
+                            $stmt->execute();
+                            $stmt->store_result();
+                    
+                            if ($stmt->num_rows > 0) {
+                                echo "<script>showAlert('Check-in already recorded for today');</script>";
+                            } else {
+                                // Insert attendance record
+                                $stmt = $conn->prepare("INSERT INTO emp_attendance (empcode, name, date, check_in_time, status) VALUES (?, ?, ?, ?, 'Present')");
+                                $stmt->bind_param("isss", $id, $name, $current_date, $current_time);
+                                $stmt->execute();
+                                echo "<script>showAlert('Check-in successful');</script>";
+                            }
+                            $stmt->close();
+                        } else {
+                            echo "<script>showAlert('Employee not found');</script>";
+                        }
                     }
+                
 
                     if (isset($_POST['check_out'])) {
                         // Check if a valid check-in exists and no check-out has been recorded yet
@@ -336,26 +350,12 @@ include('sidemenu.php');
                             echo "<script>showAlert('Check-out failed: No matching check-in record found or already checked out');</script>";
                         }
                     }
-
-                    // if (isset($_POST['absent'])) {
-                    //     $stmt = $conn->prepare("SELECT id FROM emp_attendance WHERE empcode = ? AND date = ?");
-                    //     $stmt->bind_param("is", $id, $current_date);
-                    //     $stmt->execute();
-                    //     $stmt->store_result();
-
-                    //     if ($stmt->num_rows > 0) {
-                    //         echo "<script>showAlert('Absent record already exists for today');</script>";
-                    //     } else {
-                    //         $stmt = $conn->prepare("INSERT INTO emp_attendance (empcode, date, status) VALUES (?, ?, 'Absent')");
-                    //         $stmt->bind_param("is", $id, $current_date);
-                    //         $stmt->execute();
-                    //         echo "<script>showAlert('Absent recorded successfully');</script>";
-                    //     }
-                    //     $stmt->close();
-                    // }
                 }
                 ?>
 
     </body>
 </html>
+<?php } else {
+    include('user_attend.php');
+} ?>
 <?php include('footer.php'); ?>
