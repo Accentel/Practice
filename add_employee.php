@@ -18,7 +18,7 @@ $ses=$_SESSION['user'];
             padding: 20px;
             background: rgba(255, 255, 255, 0.8);
             box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
-            margin-top: 50px;
+            margin-top: 10px;
         }
         
         /* Style for the input and progress bar container */
@@ -67,18 +67,6 @@ $ses=$_SESSION['user'];
                 </div>
             </div>
 
-            <!-- <div class="form-group row">
-                <label for="role" class="col-sm-4 col-form-label"><b>Role:</b><span style="color: red;"> * </span></label>
-                <div class="col-sm-8">
-                    <select name="role" id="role" class="form-control" required>
-                        <option value="admin">Admin</option>
-                        <option value="user" selected>User</option>
-                    </select>
-                    <input type="hidden" name="user" value="<?php echo $ses; ?>" id="user" class="form-control"/>
-                </div>
-            </div> -->
-
-
             <div class="form-group row">
                 <label for="email" class="col-sm-4 col-form-label"><b>Email:</b><span style="color: red;"> * </span></label>
                 <div class="col-sm-8">
@@ -91,6 +79,16 @@ $ses=$_SESSION['user'];
                 <div class="col-sm-8">
                     <input type="text" name="mobile_number" id="mobile_number" class="form-control" pattern="^\d{10}$" maxlength="10" required 
                         oninput="validateMobileNumber(this)" title="Please enter exactly 10 digits">
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label for="mobile_number" class="col-sm-4 col-form-label"><b>Salary/Annum:</b><span style="color: red;"> * </span></label>
+                <div class="col-sm-8">
+                    <!-- <input type="text" name="salary" id="salary" class="form-control" pattern="^\d{10}$" maxlength="10" required 
+                        oninput="validateMobileNumber(this)" title="Please enter exactly 10 digits"> -->
+                        <input type="number" name="salary" id="salary" class="form-control" min="0" step="0.01" required>
+
                 </div>
             </div>
 

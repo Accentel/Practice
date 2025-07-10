@@ -48,7 +48,7 @@
             background-color: #333; /* Dark background */
             color: #fff; /* White text */
             width: calc(100% + 100px); /* Extend 100px beyond the page width */
-            margin-left: -40px; /* Shift to align the extra width evenly */
+            margin-left: -45px; /* Shift to align the extra width evenly */
         }
 
         .container {
@@ -62,9 +62,15 @@
 <body>
   
 <!-- Footer -->
-<footer class="footer text-center py-3">
+<!-- <footer class="footer text-center py-3">
     <div class="container">
         <p>&copy; 2024 Employee Management | All rights reserved.</p>
+    </div>
+</footer> -->
+
+<footer class="footer text-center py-3">
+    <div class="container">
+        <p>&copy; <?php echo date('Y'); ?> Employee Management | All rights reserved.</p>
     </div>
 </footer>
 

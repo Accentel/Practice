@@ -1,5 +1,5 @@
 <?php 
-session_start();
+// session_start();
 if($_SESSION['user']=="admin"){ ?>
     
 <!DOCTYPE html>
@@ -84,9 +84,11 @@ if($_SESSION['user']=="admin"){ ?>
         <a href="dashboard.php">Dashboard</a>
         <a href="employeelist.php">Employees</a>
         <a href="user_list.php">Usermanagement</a>
-        <a href="emp_attendance.php">Attendance</a>
-        <a href="payslip.php">Employee Attendance</a>
+        <a href="admin_attendance.php">Attendance</a>
+        <a href="emp_attendance.php">Employee Attendance</a>
         <a href="atte_overview.php">Overview</a>
+        <a href="payroll.php">Payroll</a>
+        <a href="leave_req.php">Leave Request</a>
         <!-- <a href="projects.php">Projects</a>
         <a href="settings.php">Settings</a> -->
     </div>

@@ -14,10 +14,10 @@ ini_set('display_errors', 1);
 if (isset($_GET['id'])) {
     $id = $_GET['id'];
 
-    $stmt = $conn->prepare("SELECT empcode, name, email, mobile_number, gender, password FROM practice WHERE id = ?");
+    $stmt = $conn->prepare("SELECT empcode, name, email, mobile_number, gender, salary, password FROM practice WHERE id = ?");
     $stmt->bind_param("i", $id);
     $stmt->execute();
-    $stmt->bind_result($empcode, $name, $email, $mobile_number, $gender, $password);
+    $stmt->bind_result($empcode, $name, $email, $mobile_number, $gender, $salary, $password);
     $stmt->fetch();
     $stmt->close();
 } else {
@@ -32,10 +32,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $email = filter_input(INPUT_POST, 'email', FILTER_SANITIZE_EMAIL);
     $mobile_number = filter_input(INPUT_POST, 'mobile_number', FILTER_SANITIZE_STRING);
     $gender = filter_input(INPUT_POST, 'gender', FILTER_SANITIZE_STRING);
+    $salary = filter_input(INPUT_POST, 'salary', FILTER_SANITIZE_STRING);
     $password = filter_input(INPUT_POST, 'password', FILTER_SANITIZE_STRING);
 
-    $stmt = $conn->prepare("UPDATE practice SET empcode = ?, name = ?, email = ?, mobile_number = ?, gender = ?, password = ? WHERE id = ?");
-    $stmt->bind_param('ssssssi', $empcode, $name, $email, $mobile_number, $gender, $password, $id);
+    $stmt = $conn->prepare("UPDATE practice SET empcode = ?, name = ?, email = ?, mobile_number = ?, gender = ?, salary = ?, password = ? WHERE id = ?");
+    $stmt->bind_param('sssssssi', $empcode, $name, $email, $mobile_number, $gender, $salary, $password, $id);
 
     if ($stmt->execute()) {
         echo "Record updated successfully";
@@ -128,6 +129,13 @@ $conn->close();
                 <label for="mobile_number" class="col-sm-4 col-form-label"><b>Mobile Number:</b><span class="required" style="color: red; font-weight: bold;"> * </span></label>
                 <div class="col-sm-8">
                     <input type="text" id="mobile_number" name="mobile_number" value="<?php echo htmlspecialchars($mobile_number); ?>" class="form-control" autocomplete="off" required>
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label for="mobile_number" class="col-sm-4 col-form-label"><b>Salary/Annum:</b><span class="required" style="color: red; font-weight: bold;"> * </span></label>
+                <div class="col-sm-8">
+                    <input type="text" id="salary" name="salary" value="<?php echo htmlspecialchars($salary); ?>" class="form-control" autocomplete="off" required>
                 </div>
             </div>
 

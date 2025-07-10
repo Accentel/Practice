@@ -1,6 +1,8 @@
 
 <?php include('header.php'); ?>
-<?php include('sidemenu.php'); ?>
+<?php 
+session_start();
+include('sidemenu.php'); ?>
 <?php include('connection.php'); ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -45,6 +47,9 @@
         padding: 20px;
         margin-top: 20px;
         box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+        width: 105%;          /* or 100% if you want it flush edge‑to‑edge */
+        margin-left: auto;
+        margin-right: auto;
     }
 
     .custom-blue {

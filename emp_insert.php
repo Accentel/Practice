@@ -17,17 +17,20 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $ecode = "A1"; // Default if no records exist
     }
 
-    // Collect data from the form
-    $name = $_POST['name'];
-    $user = $_POST['user'];
-    $email = $_POST['email'];
-    $mobile_number = $_POST['mobile_number'];
-    $gender = $_POST['gender'];
-    $password = $_POST['password'];
+     // Collect and validate data from the form
+    $name = $conn->real_escape_string($_POST['name']);
+    $email = $conn->real_escape_string($_POST['email']);
+    $mobile_number = $conn->real_escape_string($_POST['mobile_number']);
+    $gender = $conn->real_escape_string($_POST['gender']);
+    $salary = $conn->real_escape_string($_POST['salary']);
+    $password = $conn->real_escape_string($_POST['password']);
+    
+    // Handle the `user` field: Set a default value if not provided
+    $user = isset($_POST['user']) && !empty($_POST['user']) ? $conn->real_escape_string($_POST['user']) : 'employee';
 
     // SQL query to insert the data
-    $sql = "INSERT INTO practice (empcode, name, email, mobile_number, gender, password, user)
-            VALUES ('$ecode', '$name', '$email', '$mobile_number', '$gender', '$password', '$user')";
+    $sql = "INSERT INTO practice (empcode, name, email, mobile_number, gender, salary, password, user)
+            VALUES ('$ecode', '$name', '$email', '$mobile_number', '$gender','$salary', '$password', '$user')";
 
     if ($conn->query($sql)) {
         // Success: Redirect to prevent form resubmission
@@ -35,7 +38,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         exit();
     } else {
         // Display error if query fails
-        echo "Error: " . $sql . "<br>" . mysqli_error($conn);
+        echo "Error: " . $sql . "<br>" . $conn->error;
     }
 }
 ?>

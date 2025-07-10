@@ -1,18 +1,113 @@
-
 <?php 
-
-include('header.php');
+include('header.php'); ?>
+<?php
+session_start();
 include('sidemenu.php'); 
-// include('auto_mark_absent.php');
-// $empcode = $_SESSION['empcode'];
-//  $name = $_SESSION['user'] ?? ''; // Check if 'name1' exists in $_SESSION
-if ($_SESSION['user'] == "admin") {?>
- 
 
+// Employee Dropdown and Attendance Form
+
+if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['empcode'])) {
+    $empcode = $_POST['empcode'];
+    $current_date = date('Y-m-d');
+
+    // Connection to the database
+    include("connection.php");
+
+    if (isset($_POST['check_in'])) {
+        // Check if the employee has already checked in today
+        $stmt = $conn->prepare("SELECT e.name FROM emp_attendance AS ea 
+                                JOIN practice AS e ON ea.empcode = e.id 
+                                WHERE ea.empcode = ? AND ea.date = ?");
+        $stmt->bind_param("ss", $empcode, $current_date);
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        if ($result->num_rows > 0) {
+            // Fetch the employee's name
+            $row = $result->fetch_assoc();
+            $employee_name = $row['name'];
+    
+            // Employee has already checked in today
+            echo "<script>alert('$employee_name has already checked in today!');</script>";
+        } else {
+            // Fetch employee name from the practice table
+            $stmt = $conn->prepare("SELECT name FROM practice WHERE id = ?");
+            $stmt->bind_param("s", $empcode);
+            $stmt->execute();
+            $result = $stmt->get_result();
+            $row = $result->fetch_assoc();
+            $employee_name = $row['name'];
+
+            // Record Check-in time
+            date_default_timezone_set('Asia/Kolkata');
+            $check_in_time = date('H:i:s'); // Get current time
+            $check_out_time = ""; // Empty initially
+            $work_hours = ""; // Work hours will be calculated after check-out
+
+            // Insert check-in record into the database
+            $stmt = $conn->prepare("INSERT INTO emp_attendance (empcode, name, date, check_in_time, check_out_time, work_hours, status) 
+                                    VALUES (?, ?, ?, ?, ?, ?, 'present')");
+            $stmt->bind_param("ssssss", $empcode, $employee_name, $current_date, $check_in_time, $check_out_time, $work_hours);
+            $stmt->execute();
+
+            echo "<script>alert('Check-in successful!');</script>";
+        }
+    } elseif (isset($_POST['check_out'])) {
+        // Record Check-out time
+        date_default_timezone_set('Asia/Kolkata');
+        $check_out_time = date('H:i:s'); // Get current time
+    
+        // Check if there is an existing check-in record without a check-out time
+        $stmt = $conn->prepare("SELECT check_in_time FROM emp_attendance WHERE empcode = ? AND date = ? AND check_out_time = ''");
+        $stmt->bind_param("ss", $empcode, $current_date);
+        $stmt->execute();
+        $result = $stmt->get_result();
+    
+        if ($result->num_rows > 0) {
+            $row = $result->fetch_assoc();
+            $check_in_time = $row['check_in_time'];
+    
+            // Calculate Work Hours
+            $check_in_timestamp = strtotime($check_in_time);
+            $check_out_timestamp = strtotime($check_out_time);
+    
+            if ($check_out_timestamp < $check_in_timestamp) {
+                $check_out_timestamp += 86400; // Add 24 hours if crossed midnight
+            }
+    
+            $work_duration = $check_out_timestamp - $check_in_timestamp;
+    
+            // Convert the work duration to hours, minutes, and seconds
+            $hours = floor($work_duration / 3600);
+            $minutes = floor(($work_duration % 3600) / 60);
+            $seconds = $work_duration % 60;
+    
+            $work_hours = sprintf("%02d:%02d:%02d", $hours, $minutes, $seconds);
+    
+            // Update Check-out record and Work Hours
+            $stmt = $conn->prepare("UPDATE emp_attendance SET check_out_time = ?, work_hours = ? 
+                                    WHERE empcode = ? AND date = ? AND check_out_time = ''");
+            $stmt->bind_param("ssss", $check_out_time, $work_hours, $empcode, $current_date);
+            $stmt->execute();
+    
+            echo "<script>alert('Check-out successful!');</script>";
+        } else {
+            // No check-in record found for today
+            echo "<script>alert('Error: No check-in record found for this employee today. Cannot check out without checking in.');</script>";
+        }
+    }    
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <style>
+        body {
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden; /* Prevent horizontal scrolling */
+            font-family: Arial, sans-serif;
+        }
         .card {
             border: 1px solid #ccc;
             border-radius: 5px;
@@ -20,6 +115,9 @@ if ($_SESSION['user'] == "admin") {?>
             margin-top: 20px;
             box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
             position: relative;
+            width: 105%;          /* or 100% if you want it flush edge‑to‑edge */
+            margin-left: auto;
+            margin-right: auto;
         }
         .card-topline {
             position: absolute;
@@ -30,6 +128,43 @@ if ($_SESSION['user'] == "admin") {?>
             background-color: red;
             border-radius: 5px 5px 0 0;
         }
+
+        /* Flexbox layout for form */
+        .form-container {
+            display: flex;
+            justify-content: space-between; /* Distributes items evenly with space */
+            align-items: center; /* Vertically aligns items */
+            gap: 10px;
+            margin-bottom: 15px;
+            margin-left:545px;
+        }
+
+        .form-container select,
+        .form-container input,
+        .form-container button {
+            padding: 10px;
+            margin: 5px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            width: 170px; /* Set width to keep things aligned */
+            box-sizing: border-box;
+        }
+
+        .form-container button {
+            cursor: pointer;
+            width: 120px; /* Set button width to match */
+        }
+
+        .form-container button[type="submit"]:first-child {
+            background-color: green;
+            color: white;
+        }
+
+        .form-container button[type="submit"]:nth-child(2) {
+            background-color: red;
+            color: white;
+        }
+
         .pagination {
             display: flex;
             justify-content: space-between;
@@ -52,41 +187,9 @@ if ($_SESSION['user'] == "admin") {?>
         nav a:hover {
             border-color: #4CAF50;
         }
-        .modal {
-            display: none;
-            position: fixed;
-            z-index: 1;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            overflow: auto;
-            background-color: rgb(0,0,0);
-            background-color: rgba(0,0,0,0.4);
-            padding-top: 60px;
-        }
-        .modal-content {
-            background-color: #fefefe;
-            margin: 5% auto;
-            padding: 20px;
-            border: 1px solid #888;
-            width: 80%;
-            max-width: 400px;
-        }
-        .close {
-            color: #aaa;
-            float: right;
-            font-size: 28px;
-            font-weight: bold;
-        }
-        .close:hover,
-        .close:focus {
-            color: black;
-            text-decoration: none;
-            cursor: pointer;
-        }
     </style>
-    <script>
+
+<script>
     function checkTimeAndMarkAbsent() {
         const now = new Date();
 
@@ -153,90 +256,105 @@ if ($_SESSION['user'] == "admin") {?>
     </script>
 
 </head>
-    <body>
-        <!-- <?php echo htmlspecialchars($name); ?> -->
-                <h5><b>
-                  Employee Attendance  - <?php echo date('F Y'); ?></b>
+<body>
+                <h5>
+                 <b> Employee Attendance - <?php echo date('d F Y'); ?></b>
                 </h5>
 
-                <div class="card">
-                 <div class="card-topline"></div>
-                    <form method="post" action="emp_attendance.php" style="margin-left:758px; margin-bottom:10px; display: flex; gap: 13px; align-items: center;">
-                        <input type="hidden" name="id" value="{$row['id']}">
-                
-                        <button type="button" onclick="openModal(1, 'check_in')" style="background-color: blue; color: white; padding: 4px 10px; border: none; border-radius: 5px; cursor: pointer;">Check-in</button>
-                        
-                        <button type="button" onclick="openModal(1, 'check-out')" style="background-color: blue; color: white; padding: 4px 10px; border: none; border-radius: 5px; cursor: pointer;">Check-out</button>
-                        
-                        <!-- <button type="submit" name="absent" value="1" style="background-color: blue; color: white; padding: 4px 10px; border: none; border-radius: 5px; cursor: pointer;">Absent</button> -->
-                    </form>
+    <div class="card">
+        <div class="card-topline"></div>
 
-                    <div class="table-scrollable">
-                        <table class="table table-hover table-striped table-checkable order-column full-width">
-                            <thead>
-                                <tr style="text-align: center">
-                                    <th>ID</th>
-                                    <th>Emp Code</th>
-                                    <th>Name</th>
-                                    <th>Date</th>
-                                    <th>In-Time</th>
-                                    <th>Out-Time</th>
-                                    <th>Work Hours</th>
-                                    <th>Status</th>
-                                    <th>Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <?php
-                                include("connection.php");
+        <form method="post" action="emp_attendance.php" class="form-container">
+            <!-- Employee Selection Dropdown -->
+            <select name="empcode" id="empcode" required>
+                <option value="" disabled selected>Select Employee</option>
+                <?php
+                    include("connection.php");
+                    $result = $conn->query("SELECT id, name FROM practice");
+                    while ($row = $result->fetch_assoc()) {
+                        echo "<option value='{$row['id']}'>{$row['name']}</option>";
+                    }
+                ?>
+            </select>
 
-                                $limit = isset($_GET['limit']) ? (int)$_GET['limit'] : 10;
-                                $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
-                                $offset = ($page - 1) * $limit;
+            <!-- Display Check-in Time -->
+            <input type="hidden" id="check_in_time" name="check_in_time" readonly placeholder="Check-in Time">
 
-                                $sql = "SELECT 
-                                            ea.id, ea.date, ea.check_in_time, ea.check_out_time, 
-                                            ea.status, ea.work_hours, 
-                                            e.empcode, e.name
-                                        FROM emp_attendance AS ea
-                                        JOIN practice AS e ON ea.empcode = e.id
-                                        ORDER BY ea.date ASC, ea.id ASC
-                                        LIMIT $offset, $limit";
+            <!-- Display Check-out Time -->
+            <input type="hidden" id="check_out_time" name="check_out_time" readonly placeholder="Check-out Time">
 
-                                $result = $conn->query($sql);
+            <!-- Work Hours -->
+            <input type="hidden" id="work_hours" name="work_hours" readonly placeholder="Work Hours">
 
-                                if ($result->num_rows > 0) {
-                                    while ($row = $result->fetch_assoc()) {
-                                        // Format the date to dd-mm-yyyy
-                                        $formattedDate = date('d-m-Y', strtotime($row['date']));
-                                
-                                        echo "<tr style='text-align:center'>
-                                            <td>{$row['id']}</td>
-                                            <td>{$row['empcode']}</td>
-                                            <td>{$row['name']}</td>
-                                            <td>{$formattedDate}</td>  <!-- Displaying formatted date -->
-                                            <td>{$row['check_in_time']}</td>
-                                            <td>{$row['check_out_time']}</td>
-                                            <td>{$row['work_hours']}</td>
-                                            <td>{$row['status']}</td>
-                                            <td>
-                                                <a href='view_attendance.php?id={$row['id']}'>View</a>
-                                                
-                                            </td>
-                                        </tr>";
-                                    }
-                                } else {
-                                    echo "<tr><td colspan='9' style='text-align: center;'>No attendance records found</td></tr>";
-                                }
-                                    
-                                $countResult = $conn->query("SELECT COUNT(*) AS total FROM emp_attendance");
-                                $total = $countResult->fetch_assoc()['total'];
-                                $totalPages = ceil($total / $limit);
-                                ?>
-                            </tbody>
-                        </table>
-                    </div>
+            <!-- Buttons to Check-in and Check-out -->
+            <button type="submit" name="check_in" onclick="openModal(1, 'check_in')"  style="background-color: green; color: white; padding: 9px 10px; border: none; border-radius: 5px; cursor: pointer;">Check-in</button>
+            <button type="submit" name="check_out" onclick="openModal(1, 'check-out')" style="background-color: red; color: white; padding: 9px 10px; border: none; border-radius: 5px; cursor: pointer;">Check-out</button>
+        </form>
 
+        <!-- Employee Attendance Table -->
+        <div class="table-scrollable">
+    <table class="table table-hover table-striped table-checkable order-column full-width">
+        <thead>
+            <tr style="text-align: center">
+                <th>ID</th>
+                <th>Emp Code</th>
+                <th>Name</th>
+                <th>Date</th>
+                <th>In-Time</th>
+                <th>Out-Time</th>
+                <th>Work Hours</th>
+                <th>Status</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            <?php
+            $limit = isset($_GET['limit']) ? (int)$_GET['limit'] : 10;
+            $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
+            $offset = ($page - 1) * $limit;
+
+            // Fetch today's attendance records only
+            $sql = "SELECT ea.id, ea.date, ea.check_in_time, ea.check_out_time, ea.status, ea.work_hours, e.empcode, e.name
+                    FROM emp_attendance AS ea
+                    JOIN practice AS e ON ea.empcode = e.id
+                    WHERE ea.date = CURDATE()
+                    ORDER BY ea.date DESC
+                    LIMIT $offset, $limit";
+
+            $result = $conn->query($sql);
+
+            if ($result->num_rows > 0) {
+                while ($row = $result->fetch_assoc()) {
+                    $formattedDate = date('d-m-Y', strtotime($row['date']));
+                    echo "<tr style='text-align:center'>
+                        <td>{$row['id']}</td>
+                        <td>{$row['empcode']}</td>
+                        <td>{$row['name']}</td>
+                        <td>{$formattedDate}</td>
+                        <td>{$row['check_in_time']}</td>
+                        <td>{$row['check_out_time']}</td>
+                        <td>{$row['work_hours']}</td>
+                        <td>{$row['status']}</td>
+                        <td>
+                            <a href='view_attendance.php?id={$row['id']}'>View</a>
+                        </td>
+                    </tr>";
+                }
+            } else {
+                echo "<tr><td colspan='9' style='text-align: center;'>No attendance records for today</td></tr>";
+            }
+            // Get today's date
+            $current_date = date('Y-m-d');
+
+            // Count only today's records
+            $countResult = $conn->query("SELECT COUNT(*) AS total FROM emp_attendance WHERE date = '$current_date'");
+            $total = $countResult->fetch_assoc()['total'];
+            $totalPages = ceil($total / $limit);
+
+            ?>
+        </tbody>
+    </table>
+</div>
                     <div class="pagination">
                         <div>
                             <?php
@@ -263,99 +381,8 @@ if ($_SESSION['user'] == "admin") {?>
                         </nav>
                     </div>
                 </div>
-
-                <!-- Modal for check-in/check-out -->
-                <div id="modal" class="modal">
-                    <div class="modal-content">
-                        <span class="close" onclick="closeModal()" style="position: absolute; top: 10px; right: 10px; font-size: 30px; cursor: pointer;">&times;</span>
-                        <form method="post" action="emp_attendance.php">
-                            <input type="hidden" name="id" id="emp_id">
-                            <input type="hidden" name="action" id="action">
-                            <label for="date"><b>Date:</b></label>
-                            <input type="text" id="date" name="date" class="form-control" readonly>
-                            <br>
-                            <label for="time"><b>Time:</b></label>
-                            <input type="text" id="time" name="time" class="form-control" readonly>
-                            <br>
-                            <div style="display: flex; justify-content: center; gap: 10px;">
-                                <button type="submit" name="check_in" style="background-color: green; color: white; padding: 5px 14px; border: none; border-radius: 5px; cursor: pointer;">Check-in</button>
-                                <button type="submit" name="check_out" style="background-color: red; color: white; padding: 5px 10px; border: none; border-radius: 5px; cursor: pointer;">Check-out</button>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-
-                <?php
-                if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-                    include("connection.php");
-
-                    $id = $_POST['id'] ?? null; // Default to null if 'id' is not set
-                    $current_date = date('Y-m-d');
-                    date_default_timezone_set('Asia/Kolkata');
-                    $current_time = date('H:i:s');
-                    
-
-                    if (isset($_POST['check_in'])) {
-                        // Fetch the employee name from the database
-                        $stmt = $conn->prepare("SELECT name FROM practice WHERE id = ?");
-                        $stmt->bind_param("i", $id); // Assuming $id is the empcode
-                        $stmt->execute();
-                        $stmt->bind_result($name);
-                        $stmt->fetch();
-                        $stmt->close();
-                    
-                        if ($name) { // Ensure the name was found
-                            // Check if already checked in
-                            $stmt = $conn->prepare("SELECT id FROM emp_attendance WHERE empcode = ? AND date = ? AND check_in_time IS NOT NULL");
-                            $stmt->bind_param("is", $id, $current_date);
-                            $stmt->execute();
-                            $stmt->store_result();
-                    
-                            if ($stmt->num_rows > 0) {
-                                echo "<script>showAlert('Check-in already recorded for today');</script>";
-                            } else {
-                                // Insert attendance record
-                                $stmt = $conn->prepare("INSERT INTO emp_attendance (empcode, name, date, check_in_time, status) VALUES (?, ?, ?, ?, 'Present')");
-                                $stmt->bind_param("isss", $id, $name, $current_date, $current_time);
-                                $stmt->execute();
-                                echo "<script>showAlert('Check-in successful');</script>";
-                            }
-                            $stmt->close();
-                        } else {
-                            echo "<script>showAlert('Employee not found');</script>";
-                        }
-                    }
-                
-
-                    if (isset($_POST['check_out'])) {
-                        // Check if a valid check-in exists and no check-out has been recorded yet
-                        $stmt = $conn->prepare("SELECT id, check_in_time FROM emp_attendance WHERE empcode = ? AND date = ? AND check_out_time IS NULL");
-                        $stmt->bind_param("is", $id, $current_date);
-                        $stmt->execute();
-                        $stmt->bind_result($attendance_id, $check_in_time);
-                        $stmt->fetch();
-                        $stmt->close();
-
-                        if ($attendance_id) {
-                            $check_in = new DateTime($check_in_time);
-                            $check_out = new DateTime($current_time);
-                            $interval = $check_in->diff($check_out);
-                            $work_hours = $interval->format('%H:%I:%S');
-
-                            $stmt = $conn->prepare("UPDATE emp_attendance SET check_out_time = ?, work_hours = ? WHERE id = ?");
-                            $stmt->bind_param("ssi", $current_time, $work_hours, $attendance_id);
-                            $stmt->execute();
-                            echo "<script>showAlert('Check-out successful');</script>";
-                        } else {
-                            echo "<script>showAlert('Check-out failed: No matching check-in record found or already checked out');</script>";
-                        }
-                    }
-                }
-                ?>
-
-    </body>
+    </div>
+</body>
 </html>
-<?php } else {
-    include('user_attend.php');
-} ?>
+<br>
 <?php include('footer.php'); ?>

@@ -1,5 +1,7 @@
 <?php
-include('header.php');
+include('header.php'); ?>
+<?php 
+session_start();
 include('sidemenu.php');
 include('connection.php');
 

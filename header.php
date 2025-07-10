@@ -89,6 +89,7 @@
 
 </style>
 
+
 </head>
 <body>
  <!-- Sidebar -->
@@ -101,32 +102,29 @@
     </div> -->
 
     <header class="header">
-        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-            <a class="navbar-brand" href="index.php">Dashboard</a>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ml-auto">
-                    <li class="nav-item">
-                        <a class="nav-link" href="dashboard.php">Home</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="employeelist.php">Employees</a>
-                    </li>
-                    <!-- <li class="nav-item">
-                        <a class="nav-link" href="departments.php">Departments</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="projects.php">Projects</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="settings.php">Settings</a>
-                    </li> -->
-                    <li class="nav-item">
-                        <a class="nav-link" href="index.php">Logout</a>
-                    </li>
-                </ul>
-            </div>
-        </nav>
-    </header>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark w-100">
+        <a class="navbar-brand" href="index.php">DASHBOARD</a>
+        <div class="ml-auto d-flex align-items-center">
+            <!-- Placeholder text -->
+            <span id="datetime" class="text-white mr-4" style="font-weight: bold;">Loading time...</span>
+
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link" href="dashboard.php">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="employeelist.php">Employees</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="index.php">Logout</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+   
+</header>
+
 
     <!-- Page content -->
     <div class="content">
@@ -139,5 +137,20 @@
                 echo '<div class="alert alert-success" role="alert">Record deleted successfully</div>';
             }
             ?>
+             <!-- Run JS immediately after DOM renders -->
+    <script>
+        function updateDateTime() {
+            const now = new Date();
+            const options = {
+                year: 'numeric', month: 'short', day: '2-digit',
+                hour: '2-digit', minute: '2-digit', second: '2-digit',
+                hour12: true
+            };
+            document.getElementById('datetime').innerText = now.toLocaleString('en-IN', options);
+        }
+
+        updateDateTime(); // Show immediately
+        setInterval(updateDateTime, 1000); // Then keep updating every second
+    </script>
 </body>
 </html>

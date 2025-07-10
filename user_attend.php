@@ -5,19 +5,21 @@ error_reporting(E_ALL);
 ini_set('display_errors', 1);
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (isset($_POST['name1']) && isset($_POST['pass1'])) {
-    $username = $_POST['name1']; // Replace with actual form field name
-    $password = $_POST['pass1']; // Replace with actual form field name
+        
+    $username = $_POST['name1']; 
+    $password = $_POST['pass1'];
 
     // Validate user credentials
-    $stmt = $conn->prepare("SELECT ename FROM login WHERE username = ? AND password = ?");
-    $stmt->bind_param("ss", $ename, $password);
-    $stmt->execute();
-    $stmt->bind_result($ename, $username);
-    $stmt->fetch();
-
+    $stmt = $conn->prepare("SELECT ename, empcode FROM login WHERE username = ? AND password = ?");
+        $stmt->bind_param("ss", $username, $password);
+        $stmt->execute();
+        $stmt->bind_result($ename, $empcode);
+        $stmt->fetch();
+        
     if ($empcode) { // If credentials match
         $_SESSION['user'] = $username;
         $_SESSION['empcode'] = $empcode;
+        $_SESSION['ename'] = $ename;  // Storing ename for use
         // header('Location: dashboard.php'); // Redirect to dashboard
         exit();
     } else {
@@ -33,6 +35,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <head>
 <style>
         .card {
+            width: 100%;
             border: 1px solid #ccc;
             border-radius: 5px;
             padding: 20px;
@@ -89,8 +92,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             margin: 5% auto;
             padding: 20px;
             border: 1px solid #888;
-            width: 80%;
-            max-width: 400px;
+            width: 70%;
+            max-width: 300px;
         }
         .close {
             color: #aaa;
@@ -104,6 +107,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             text-decoration: none;
             cursor: pointer;
         }
+        body {
+    margin: 0; /* Remove any default margin */
+    overflow-x: hidden; /* Disable horizontal scrolling */
+}
+
+button {
+    width: 100px; /* Set a fixed width */
+    padding: 5px 10px; /* Adjust padding */
+    font-size: 14px; /* Ensure consistent font size */
+    background-color: blue; 
+    color: white; 
+    border: none; 
+    border-radius: 5px; 
+    cursor: pointer;
+}
     </style>
     <script>
         function openModal(action) {
@@ -133,7 +151,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
 
         function showAlert(message) {
-            alert(message);
+            alert(message); 
         }
     </script>
 </head>
@@ -142,9 +160,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     <div class="card">
     <div class="card-topline"></div>
-        <form method="post" action="emp_attendance.php" style="margin-left:758px; margin-bottom:10px; display: flex; gap: 13px; align-items: center;">
+        <form method="post" action="emp_attendance.php" style="margin-left:680px; margin-bottom:10px; display: flex; gap: 13px; align-items: center;">
             <button type="button" onclick="openModal('check_in')" style="background-color: blue; color: white; padding: 4px 10px; border: none; border-radius: 5px; cursor: pointer;">Check-in</button>
             <button type="button" onclick="openModal('check_out')" style="background-color: blue; color: white; padding: 4px 10px; border: none; border-radius: 5px; cursor: pointer;">Check-out</button>
+            <button type="button" onclick="openModal('leave_request')" style="background-color: blue; color: white; padding: 4px 10px; border: none; border-radius: 5px; cursor: pointer;">Leave</button>
         </form>
 
         <div class="table-scrollable">
@@ -162,16 +181,24 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     </tr>
                 </thead>
                 <tbody>
+                
                     <?php
                     $sql = "SELECT 
-                                date, check_in_time, check_out_time, work_hours, status
-                            FROM emp_attendance
-                            WHERE empcode = ?
-                            ORDER BY date DESC";
-                    $stmt = $conn->prepare($sql);
-                    $stmt->bind_param("i", $empcode);
-                    $stmt->execute();
-                    $result = $stmt->get_result();
+                                ea.id, ea.empcode, ea.name, ea.date, ea.check_in_time, ea.check_out_time, ea.work_hours, ea.status
+                            FROM emp_attendance AS ea
+                            WHERE ea.empcode = ? OR ea.name = ?
+                            ORDER BY ea.date ASC, ea.id ASC";
+
+                                // $sql = "SELECT 
+                                // ea.id, ea.empcode, ea.name, ea.date, ea.check_in_time, ea.check_out_time, ea.work_hours, ea.status
+                                // FROM emp_attendance AS ea
+                                // WHERE ea.empcode = ?
+                                // ORDER BY ea.date ASC, ea.id ASC";
+                            
+                                $stmt = $conn->prepare($sql);
+                                $stmt->bind_param("is", $id, $name); // Replace $id and $name with actual variables
+                                $stmt->execute();
+                                $result = $stmt->get_result();
 
                     if ($result->num_rows > 0) {
                         while ($row = $result->fetch_assoc()) {
@@ -230,6 +257,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $stmt = $conn->prepare($sql);
             $stmt->bind_param("is", $empcode, $current_date);
             $stmt->execute();
+            
             $stmt->store_result();
 
             if ($stmt->num_rows > 0) {
@@ -269,4 +297,3 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     ?>
 </body>
 </html>
-<?php include('footer.php'); ?>

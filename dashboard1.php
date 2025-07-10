@@ -1,11 +1,9 @@
-<?php include('header.php'); ?>
-<?php 
-session_start();
-include('sidemenu.php')?>
-<?php 
 
-if($_SESSION['user']=="admin"){ ?>
 
+<?php
+//session_start();
+$name = $_SESSION['user'] ?? ''; // Check if 'name1' exists in $_SESSION
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -43,7 +41,7 @@ footer {
             <div class="col-md-4">
                 <div class="card text-white bg-primary mb-3">
                     <div class="card-body">
-                        <h5 class="card-title">Total Employees</h5>
+                        <h5 class="card-title">Total Leaves</h5>
                         <p class="card-text">
                             <?php
                             include("connection.php");
@@ -58,7 +56,7 @@ footer {
             <div class="col-md-4">
                 <div class="card text-white bg-success mb-3">
                     <div class="card-body">
-                        <h5 class="card-title">Male </h5>
+                        <h5 class="card-title">Pending Leave Request </h5>
                         <p class="card-text">
                             <?php
                             $result = $conn->query("SELECT COUNT(*) AS total FROM practice WHERE gender='Male'");
@@ -72,7 +70,7 @@ footer {
             <div class="col-md-4">
                 <div class="card text-white bg-secondary mb-3">
                     <div class="card-body">
-                        <h5 class="card-title">Female</h5>
+                        <h5 class="card-title">Remaining Leaves</h5>
                         <p class="card-text">
                             <?php
                             $result = $conn->query("SELECT COUNT(*) AS total FROM practice WHERE gender='Female'");
@@ -83,86 +81,7 @@ footer {
                     </div>
                 </div>
             </div>
-            <div class="col-md-4">
-                <div class="card text-white bg-warning mb-3">
-                    <div class="card-body">
-                        <h5 class="card-title">Present Employees</h5>
-                        <p class="card-text">
-                            <?php
-                            // Replace 'attendance_date' with the actual column name for the attendance date in your table
-                            $today_date = date('Y-m-d'); // Get today's date in 'YYYY-MM-DD' format
-                            $query = "
-                                SELECT COUNT(*) AS total 
-                                FROM emp_attendance 
-                                WHERE status = 'Present' AND date = '$today_date'
-                            ";
-                            $result = $conn->query($query);
-                            if ($result) {
-                                $row = $result->fetch_assoc();
-                                echo $row['total'];
-                            } else {
-                                echo "0"; // Handle query errors gracefully
-                            }
-                            ?>
-                        </p>
-                    </div>
-                </div>
-            </div>
-
-        <div class="col-md-4">
-            <div class="card text-white bg-danger mb-3">
-                <div class="card-body">
-                    <h5 class="card-title">Absent Employees</h5>
-                    <p class="card-text">
-                        <?php
-                        // Replace 'attendance_date' with the actual column name for the attendance date in your table
-                        $today_date = date('Y-m-d'); // Get today's date in 'YYYY-MM-DD' format
-                        $query = "
-                            SELECT COUNT(*) AS total 
-                            FROM emp_attendance 
-                            WHERE status = 'Absent' AND date = '$today_date'
-                        ";
-                        $result = $conn->query($query);
-                        if ($result) {
-                            $row = $result->fetch_assoc();
-                            echo $row['total'];
-                        } else {
-                            echo "0"; // Handle query errors gracefully
-                        }
-                        ?>
-                    </p>
-                </div>
-            </div>
-        </div>
-        
-
-            <div class="col-md-4">
-    <div class="card text-white bg-primary mb-3">
-        <div class="card-body">
-            <h5 class="card-title">Late By(9:45:00)</h5>
-            <p class="card-text">
-                <?php
-                // Replace 'attendance_date' with the actual column name for the attendance date in your table
-                $today_date = date('Y-m-d'); // Get today's date in 'YYYY-MM-DD' format
-                $query = "
-                    SELECT COUNT(*) AS total 
-                    FROM emp_attendance 
-                    WHERE check_in_time > '09:45:00' AND date = '$today_date'
-                ";
-                $result = $conn->query($query);
-                if ($result) {
-                    $row = $result->fetch_assoc();
-                    echo $row['total'];
-                } else {
-                    echo "0"; // Handle query errors gracefully
-                }
-                ?>
-            </p>
-        </div>
-    </div>
-</div>
-        </div>
-
+            
     </div>
 
     <!-- Full Calendar Section -->
@@ -209,10 +128,3 @@ footer {
         calendar.render();
     });
 </script>
-
-</body>
-</html>
-
-<?php } else {
-include('dashboard1.php');
-} ?>
