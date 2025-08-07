@@ -7,183 +7,200 @@ $ses=$_SESSION['user'];
 <html lang="en">
 <head>
     <title>Add Employee</title>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <style>
+        * {
+            box-sizing: border-box;
+            font-family: 'Segoe UI', sans-serif;
+        }
+        body {
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(135deg, #cfd2dc, #eceef3);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
         .form-container {
-            width: 50%;
-            max-width: 600px;
-            margin: auto;
-            border: 2px solid black;
-            border-radius: 8px;
-            padding: 20px;
-            background: rgba(255, 255, 255, 0.8);
-            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
-            margin-top: 10px;
-        }
-        
-        /* Style for the input and progress bar container */
-        #input-container {
-            position: relative;
-            width: 100%;
-        }
-
-        /* Style for the progress bar container and bar */
-        #progress-bar-container {
+            background: #f6f7fa;
+            border-radius: 20px;
+            padding: 40px;
             width: 90%;
-            height: 8px;
+            max-width: 500px;
+            border: 2px solid #999;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+        }
+        .form-container h2 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 30px;
+            letter-spacing: 1px;
+        }
+        .floating-input {
+            position: relative;
+            margin-bottom: 20px;
+        }
+        .floating-input input,
+        .floating-input select {
+            width: 100%;
+            padding: 12px 10px;
+            background: #fff;
+            border: 2px solid #999;
+            border-radius: 10px;
+            color: #333;
+            outline: none;
+            font-size: 16px;
+        }
+        .floating-input label {
+            position: absolute;
+            top: 12px;
+            left: 15px;
+            color: #555;
+            font-weight: 600;
+            font-size: 14px;
+            transition: 0.2s;
+            pointer-events: none;
+        }
+        .floating-input input:focus + label,
+        .floating-input input:not(:placeholder-shown) + label {
+            top: -10px;
+            left: 10px;
+            font-size: 12px;
+            background: #f6f7fa;
+            padding: 0 4px;
+        }
+        .gender-group {
+            display: flex;
+            justify-content: space-around;
+            margin: 15px 0;
+        }
+        .gender-group label {
+            color: #444;
+            font-weight: 600;
+        }
+        .form-actions {
+            text-align: center;
+            margin-top: 20px;
+        }
+        .form-actions button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            background: #666;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+            margin: 0 5px;
+            transition: 0.3s;
+        }
+        .form-actions button:hover {
+            background: #444;
+        }
+        #progress-bar-container {
+            width: 100%;
+            height: 6px;
             background-color: #ddd;
             border-radius: 5px;
-            margin: 3px auto 0;
-            margin-top: 1px;
-            margin-right: -8px;
+            overflow: hidden;
+            margin-top: 5px;
         }
-
         #progress-bar {
             height: 100%;
             width: 0%;
-            background-color: green;
-            border-radius: 5px;
+            background-color: #666;
             transition: width 0.3s;
+        }
+        small {
+            color: #666;
+            font-size: 12px;
         }
     </style>
 </head>
-<body class="d-flex justify-content-center align-items-center vh-100 bg-light">
+<body>
+<div class="form-container">
+    <h2>ADD EMPLOYEE</h2>
+    <form action="emp_insert.php" method="POST">
 
-    <div class="form-container">
-        <h2 class="text-center" style="text-decoration: underline;">ADD EMPLOYEE</h2>
-        <form action="emp_insert.php" method="POST">
-            <div class="form-group row">
-                <label for="ecode" class="col-sm-4 col-form-label"><b>Emp Code </b><span style="color: red;"> * </span></label>
-                <div class="col-sm-8">
-                    <input type="text" name="ecode" id="ecode" placeholder="Enter Employee Code" class="form-control" readonly required/>
-                </div>
+        <div class="floating-input">
+            <input type="text" name="ecode" id="ecode" placeholder=" " required readonly>
+            <label for="ecode">Employee Code</label>
+        </div>
+
+        <div class="floating-input">
+            <input type="text" name="name" id="name" placeholder=" " required>
+            <label for="name">Name</label>
+            <input type="hidden" name="user" value="<?php echo $ses; ?>">
+        </div>
+
+        <div class="floating-input">
+            <input type="email" name="email" id="email" placeholder=" " required>
+            <label for="email">Email</label>
+        </div>
+
+        <div class="floating-input">
+            <input type="text" name="mobile_number" id="mobile_number" placeholder=" " maxlength="10" pattern="\d{10}" required oninput="validateMobileNumber(this)">
+            <label for="mobile_number">Mobile Number</label>
+        </div>
+
+        <div class="floating-input">
+            <input type="number" name="salary" id="salary" placeholder=" " step="0.01" required>
+            <label for="salary">Salary / Annum</label>
+        </div>
+
+        <div class="floating-input">
+            <input type="password" name="password" id="password" placeholder=" " required>
+            <label for="password">Password</label>
+            <small>Password must be 8+ characters, include uppercase, number, symbol.</small>
+            <div id="progress-bar-container">
+                <div id="progress-bar"></div>
             </div>
+            <input type="checkbox" id="show-password"> <label for="show-password">Show Password</label>
+        </div>
 
-            <div class="form-group row">
-                <label for="name" class="col-sm-4 col-form-label"><b>Name:</b><span style="color: red;"> * </span></label>
-                <div class="col-sm-8">
-                    <input type="text" name="name" id="name" class="form-control" autocomplete="off" required>
-                    <input type="hidden" name="user" value="<?php echo $ses; ?>" id="user" class="form-control"/> 
-                </div>
-            </div>
+        <div class="gender-group">
+            <label><input type="radio" name="gender" value="Male" required> Male</label>
+            <label><input type="radio" name="gender" value="Female" required> Female</label>
+        </div>
 
-            <div class="form-group row">
-                <label for="email" class="col-sm-4 col-form-label"><b>Email:</b><span style="color: red;"> * </span></label>
-                <div class="col-sm-8">
-                    <input type="email" name="email" id="email" class="form-control" autocomplete="off" required>
-                </div>
-            </div>
-
-            <div class="form-group row">
-                <label for="mobile_number" class="col-sm-4 col-form-label"><b>Mobile Number:</b><span style="color: red;"> * </span></label>
-                <div class="col-sm-8">
-                    <input type="text" name="mobile_number" id="mobile_number" class="form-control" pattern="^\d{10}$" maxlength="10" required 
-                        oninput="validateMobileNumber(this)" title="Please enter exactly 10 digits">
-                </div>
-            </div>
-
-            <div class="form-group row">
-                <label for="mobile_number" class="col-sm-4 col-form-label"><b>Salary/Annum:</b><span style="color: red;"> * </span></label>
-                <div class="col-sm-8">
-                    <!-- <input type="text" name="salary" id="salary" class="form-control" pattern="^\d{10}$" maxlength="10" required 
-                        oninput="validateMobileNumber(this)" title="Please enter exactly 10 digits"> -->
-                        <input type="number" name="salary" id="salary" class="form-control" min="0" step="0.01" required>
-
-                </div>
-            </div>
-
-            <div class="form-group row">
-                <label for="password" class="col-sm-4 col-form-label"><b>Password:</b><span style="color: red;"> * </span></label>
-                <div class="col-sm-8">
-                    <input type="password" name="password" id="password" class="form-control" required>
-                    <small>Password must be at least 8 characters, with at least one uppercase letter, one number, and one special character.</small><br>
-                    <input type="checkbox" id="show-password"> <label for="show-password">Show Password</label>
-                </div>
-            </div>
-
-            <div id="input-container" class="form-group row">
-                <div class="col-sm-4"></div>
-                <div class="col-sm-8">
-                    <div id="progress-bar-container">
-                        <div id="progress-bar"></div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="form-group row">
-                <label class="col-sm-4 col-form-label"><b>Gender:<span style="color: red;"> * </span></b></label>
-                <div class="col-sm-8 d-flex align-items-center">
-                    <div class="form-check form-check-inline mr-3">
-                        <input type="radio" name="gender" value="Male" class="form-check-input" id="male" required>
-                        <label class="form-check-label" for="male"><b>Male</b></label>
-                    </div>
-                    <div class="form-check form-check-inline">
-                        <input type="radio" name="gender" value="Female" class="form-check-input" id="female" required>
-                        <label class="form-check-label" for="female"><b>Female</b></label>
-                    </div>
-                </div>
-            </div>
-
-            <div class="form-group row text-center">
-                <div class="col-12">
-                    <input type="submit" value="Submit" class="btn btn-primary" onclick="return validatePassword()">
-                    <button type="button" onclick="location.href='employeelist.php';" class="btn btn-secondary ml-2">Close</button>
-                </div>
-            </div>
-        </form>
-    </div>
-
-    <script>
-        document.getElementById("password").addEventListener("input", function() {
-            const password = this.value;
-            let criteriaMet = 0;
-
-            const lengthCriteria = /.{8,}/;
-            const uppercaseCriteria = /[A-Z]/;
-            const numberCriteria = /\d/;
-            const specialCriteria = /[\W_]/;
-
-            if (lengthCriteria.test(password)) criteriaMet++;
-            if (uppercaseCriteria.test(password)) criteriaMet++;
-            if (numberCriteria.test(password)) criteriaMet++;
-            if (specialCriteria.test(password)) criteriaMet++;
-
-            const progressPercentage = (criteriaMet / 4) * 100;
-            document.getElementById("progress-bar").style.width = progressPercentage + "%";
-        });
-
-        document.getElementById("show-password").addEventListener("change", function() {
-            const passwordInput = document.getElementById("password");
-            if (this.checked) {
-                passwordInput.type = "text";
-            } else {
-                passwordInput.type = "password";
-            }
-        });
-
-        function validatePassword() {
-            const password = document.getElementById("password").value;
-            const lengthCriteria = /.{8,}/;
-            const uppercaseCriteria = /[A-Z]/;
-            const numberCriteria = /\d/;
-            const specialCriteria = /[\W_]/;
-
-            if (!lengthCriteria.test(password) || !uppercaseCriteria.test(password) || !numberCriteria.test(password) || !specialCriteria.test(password)) {
-                alert("Password does not meet all the requirements.");
-                return false;
-            }
-            return true;
+        <div class="form-actions">
+            <button type="submit" onclick="return validatePassword()">Submit</button>
+            <button type="button" onclick="location.href='employeelist.php'">Close</button>
+        </div>
+    </form>
+</div>
+<script>
+    document.getElementById("password").addEventListener("input", function () {
+        const password = this.value;
+        let criteriaMet = 0;
+        if (/.{8,}/.test(password)) criteriaMet++;
+        if (/[A-Z]/.test(password)) criteriaMet++;
+        if (/\d/.test(password)) criteriaMet++;
+        if (/[^A-Za-z0-9]/.test(password)) criteriaMet++;
+        const progress = (criteriaMet / 4) * 100;
+        document.getElementById("progress-bar").style.width = progress + "%";
+    });
+    document.getElementById("show-password").addEventListener("change", function () {
+        const pw = document.getElementById("password");
+        pw.type = this.checked ? "text" : "password";
+    });
+    function validatePassword() {
+        const pw = document.getElementById("password").value;
+        const valid = [/.{8,}/, /[A-Z]/, /\d/, /[^A-Za-z0-9]/].every(r => r.test(pw));
+        if (!valid) {
+            alert("Password does not meet requirements.");
+            return false;
         }
-
-        function validateMobileNumber(input) {
-            const value = input.value;
-            if (!/^\d{10}$/.test(value) && value.length > 0) {
-                input.setCustomValidity("Please enter exactly 10 digits.");
-            } else {
-                input.setCustomValidity("");
-            }
+        return true;
+    }
+    function validateMobileNumber(input) {
+        if (!/^\d{10}$/.test(input.value)) {
+            input.setCustomValidity("Please enter exactly 10 digits.");
+        } else {
+            input.setCustomValidity("");
         }
-    </script>
+    }
+</script>
 </body>
 </html>
 <?php 
